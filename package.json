@@ -1,0 +1,27 @@
+{
+  "name": "track-your-books",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js",
+    "rome:check": "pnpm exec rome check backend/",
+    "rome:apply": "pnpm exec rome check backend/ --apply",
+    "rome:format": "pnpm exec rome format backend/",
+    "rome:write": "pnpm exec rome format backend/ --write"
+  },
+  "keywords": [],
+  "author": "Victoria Cheng",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "rome": "^10.0.1"
+  }
+}
