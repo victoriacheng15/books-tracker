@@ -18,14 +18,15 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile]
-            - args: [--global, rome]
+            - args: [rome]
       - name: setup node ${{ matrix.node-version }}
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
       - name: run rome tools
         run: |
-          pnpm rome:apply && pnpm rome:write
+          pnpm rome:apply
+          pnpm rome:write
       - name: commit change
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
