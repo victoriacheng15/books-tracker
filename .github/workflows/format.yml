@@ -1,0 +1,32 @@
+name: format
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: latest
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile]
+            - args: [--global, rome]
+      - name: setup node ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: run rome tools
+        run: |
+          pnpm rome:apply && pnpm rome:write
+      - name: commit change
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "style: the code has been formatted by rome tools!"
