@@ -21,7 +21,7 @@ jobs:
           #   - args: [rome]
 
       - name: setup node ${{ matrix.node-version }}
-        uses: actions/setup--node#v3
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
