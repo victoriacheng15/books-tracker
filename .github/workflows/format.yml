@@ -26,10 +26,9 @@ jobs:
           cache: "pnpm"
 
       - name: run rome tools
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm rome:apply
-          pnpm rome:write
+        run: pnpm install --frozen-lockfile
+      - run: pnpm rome:apply
+      - run: pnpm rome:write
       - name: commit change
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
