@@ -18,11 +18,11 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongoose": "^6.7.2"
+    "mongoose": "^6.8.0"
   },
   "devDependencies": {
     "express-async-handler": "^1.2.0",
     "nodemon": "^2.0.20",
-    "rome": "^10.0.1"
+    "rome": "^11.0.0"
   }
 }
