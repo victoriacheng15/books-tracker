@@ -1,74 +1,80 @@
-const ash = require("express-async-handler");
 const Book = require("../models/bookModel");
 
 // @desc get all books
 // @route  GET /api/books
 // @access private
-const getAllBooks = ash(async (req, res) => {
-	const books = await Book.find();
-	res.status(200).json(books);
-});
+const getAllBooks = async (req, res, next) => {
+	try {
+		const books = await Book.find();
+		res.status(200).json(books);
+	} catch (error) {
+		next(error);
+	}
+};
+
+// @desc get all books
+// @route  GET /api/books
+// @access private
+
+const getBook = async (req, res, next) => {
+	try {
+		const book = await Book.findById(req.params.id);
+		res.status(200).json(book);
+	} catch (error) {
+		next(error);
+	}
+};
 
 // @desc add a new book
 // @route POST /api/books
 // @access private
-const addBook = ash(async (req, res) => {
-	const { title, author, totalPage } = req.body;
+const addBook = async (req, res, next) => {
+	const newBook = new Book(req.body);
 
-	if (!title || !author || !totalPage) {
-		res.status(400);
-		throw new Error("please enter title, author and totalPage");
+	try {
+		const savedBook = await newBook.save();
+		res.status(200).json(savedBook);
+	} catch (error) {
+		next(error);
 	}
-
-	const result = {
-		title: title,
-		author: author,
-		totalPage: totalPage,
-	};
-
-	const foundBook = await Book.findOne({ title: title }).exec();
-	if (!foundBook) {
-		const book = await Book.create(result);
-		res.status(200).json(book);
-		return;
-	}
-
-	res.status(200).json({ message: "the book is existed" });
-});
+};
 
 // @desc update a book
 // @route PUT /api/books/:id
 // @access private
-const updateBook = ash(async (req, res) => {
-	const book = await Book.findById(req.params.id);
+const updateBook = async (req, res, next) => {
+	try {
+		const updatedBook = await Book.findByIdAndUpdate(
+			req.params.id,
+			{
+				$set: req.body,
+			},
+			{
+				new: true,
+			},
+		);
 
-	if (!book) {
-		res.status(400);
-		throw new Error("The book doesn't exist");
+		res.status(200).json(updatedBook);
+	} catch (error) {
+		next(error);
 	}
-
-	const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
-		new: true,
-	});
-	res.status(200).json(updatedBook);
-});
+};
 
 // @desc delate a book
 // @route delate /api/books/:id
 // @access private
-const deleteBook = ash(async (req, res) => {
-	const book = await Book.findByIdAndRemove(req.params.id);
-
-	if (!book) {
-		res.status(400);
-		throw new Error("The book doesn't exist");
+const deleteBook = async (req, res, next) => {
+	try {
+		await Book.findByIdAndRemove(req.params.id);
+		res.status(200).json("The book is deleted");
+	} catch (error) {
+		next(error);
 	}
-
-	res.status(200).json(book);
-});
+};
 
 module.exports = {
 	getAllBooks,
+	getBook,
 	addBook,
 	updateBook,
 	deleteBook,
